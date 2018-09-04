@@ -10,32 +10,8 @@
 #include "camera.h"
 #include "mathutils.h"
 #include "material.h"
-
-using Color = Vector3F;
-using ColorInt = Vector3<int>;
-
-template <int N, int M>
-struct Array2D
-{
-	Color data[N][M]{ 0 };
-	Color operator()(int i, int j) const { return data[i][j]; }
-	Color& operator()(int i, int j) { return data[i][j]; }
-	int GetRows() const { return N; }
-	int GetColumns() const { return M; }
-	int GetSize() { return N * M; }
-};
-
-using ImageData = Array2D<100, 200>;
-
-int ColorFloatToInt(float value, int maxVal)
-{
-	return int(value * maxVal + 0.5f);
-}
-
-ColorInt ColorFloatToInt(const Color& color, int maxVal)
-{
-	return ColorInt{ ColorFloatToInt(color.r,maxVal), ColorFloatToInt(color.g, maxVal), ColorFloatToInt(color.b, maxVal) };
-}
+#include "image2d.h"
+#include "threadrunner.h"
 
 void WriteImage(const std::string& fileName, const ImageData& imageData)
 {
@@ -67,7 +43,7 @@ void WriteImage(const std::string& fileName, const ImageData& imageData)
 	file.close();
 }
 
-Color RayToColor(const Ray& ray, Hitable* world, int depth);
+Color RayToColor(const Ray& ray, const Hitable* world, int depth);
 void ProcessImage(ImageData& image);
 
 int main()
@@ -79,8 +55,13 @@ int main()
 	WriteImage("Test.ppm", image);
 }
 
+void ProcessSceneToImage(const ArgsPackage& args, int startColumn, int endColumn);
+
+
 void ProcessImage(ImageData& image)
 {
+	/*
+	// small scene
 	constexpr int Size = 5;
 	Hitable *list[Size];
 	list[0] = new Sphere(Vector3F{ 0, 0, -1 }, 0.5f, new Lambertian{ Vector3F{0.8f, 0.3f, 0.3f} });
@@ -88,17 +69,32 @@ void ProcessImage(ImageData& image)
 	list[2] = new Sphere(Vector3F{ 1, 0, -1 }, 0.5f, new Metal{ Vector3F{ 0.8f, 0.6f, 0.2f }, 1.0f});
 	list[3] = new Sphere(Vector3F{ -1, 0, -1 }, 0.5f, new Dielectric{ 1.5f});
 	list[4] = new Sphere(Vector3F{ -1, 0, -1 }, -0.45f, new Dielectric{ 1.5f });
-	HitableList * world = new HitableList{ list , Size };
+	HitableList * world = new HitableList{ list , Size };//*/
+	HitableList * world = GetRandomScene();
 
-	Vector3F lookFrom{ 3, 3, 2 };
-	Vector3F lookAt{ 0, 0, -1 };
+	Vector3F lookFrom{ -8, 2, 1 };
+	Vector3F lookAt{ -4, 1, 0 };
+	//Vector3F lookAt{ 0, 1, 0 };
 	float distanceToFocus = (lookFrom - lookAt).length();
-	float aperture = 2.0f;
-	Camera cam(lookFrom, lookAt, Vector3F{ 0, 1, 0 }, 20, image.GetColumns()/ image.GetRows(), aperture, distanceToFocus);
+	float aperture = 0.0f;
+	Camera cam(lookFrom, lookAt, Vector3F{ 0.f, 1.f, 0.f }, 70.f, image.GetColumns()/ float(image.GetRows()), aperture, distanceToFocus);
 	const int SamplesNum = 100;
-	const float SampleWeight = 1.0f / SamplesNum;
 
-	for (int i = 0; i < image.GetColumns(); ++i)
+	ArgsPackage args{ SamplesNum, image, cam, world };
+	ThreadRunner runner(ProcessSceneToImage);
+	runner.ProcessSceneInThreads(args);
+}
+
+void ProcessSceneToImage(const ArgsPackage& args, int startColumn, int endColumn)
+{
+	// unpack args
+	const int &SamplesNum { args.SamplesNum };
+	ImageData & image { args.image };
+	const Camera &cam { args.cam };
+	const HitableList * world { args.world };
+
+	const float SampleWeight = 1.0f / SamplesNum;
+	for (int i = startColumn; i < endColumn; ++i)
 	{
 		for (int j = 0; j < image.GetRows(); ++j)
 		{
@@ -116,7 +112,7 @@ void ProcessImage(ImageData& image)
 	}
 }
 
-Color RayToColor(const Ray& ray, Hitable* world, int depth)
+Color RayToColor(const Ray& ray, const Hitable* world, int depth)
 {
 	HitRecord record;
 	const float antishadowAcneBias = 0.001f;

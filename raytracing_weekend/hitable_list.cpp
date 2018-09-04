@@ -18,14 +18,43 @@ HitableList * GetRandomScene()
 			Vector3F center{ a + 0.9f * GetRandomFloat(), 0.2f, b + 0.9f * GetRandomFloat() };
 			if ((center - Vector3F{ 4, 0.2f, 0 }).length() > 0.9f)
 			{
-
+				if (chooseMaterial < 0.8f)
+				{
+					list[i++] = new Sphere(center, 0.2f, 
+						new Lambertian(Vector3F{ GetRandomFloat()*GetRandomFloat(), GetRandomFloat()*GetRandomFloat(), GetRandomFloat()*GetRandomFloat() }));
+				}
+				else if (chooseMaterial < 0.95f)
+				{
+					list[i++] = new Sphere(center, 0.2f, 
+						new Metal(0.5f * (Vector3F{ 1, 1, 1 } + Vector3F{ GetRandomFloat(), GetRandomFloat(), GetRandomFloat() }), 0.5f * GetRandomFloat()));
+				}
+				else
+				{
+					list[i++] = new Sphere(center, 0.2f, new Dielectric(1.5f));
+				}
 			}
 		}
 	}
 	list[i++] = new Sphere(Vector3F{ 0, 1, 0 }, 1, new Dielectric(1.5f));
 	list[i++] = new Sphere(Vector3F{-4, 1, 0 }, 1, new Lambertian(Vector3F{ 0.4f, 0.2f, 0.1f }));
 	list[i++] = new Sphere(Vector3F{ 4, 1, 0 }, 1, new Metal(Vector3F{ 0.7f, 0.6f, 0.5f }, 0.0f));
-	HitableList* scene;
 
 	return new HitableList{ list, i };
+}
+
+bool HitableList::hit(const Ray& ray, float tMin, float tMax, HitRecord& recordOut) const
+{
+	HitRecord tempRecord;
+	bool hitAnything = false;
+	float closest = tMax;
+	for (int i = 0; i < listSize; ++i)
+	{
+		if (list[i]->hit(ray, tMin, closest, tempRecord))
+		{
+			hitAnything = true;
+			closest = tempRecord.t;
+			recordOut = tempRecord;
+		}
+	}
+	return hitAnything;
 }

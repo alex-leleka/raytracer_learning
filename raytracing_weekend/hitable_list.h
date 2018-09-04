@@ -11,21 +11,4 @@ public:
 	int listSize{ 0 };
 };
 
-bool HitableList::hit(const Ray& ray, float tMin, float tMax, HitRecord& recordOut) const
-{
-	HitRecord tempRecord;
-	bool hitAnything = false;
-	float closest = tMax;
-	for (int i = 0; i < listSize; ++i)
-	{
-		if (list[i]->hit(ray, tMin, closest, tempRecord))
-		{
-			hitAnything = true;
-			closest = tempRecord.t;
-			recordOut = tempRecord;
-		}
-	}
-	return hitAnything;
-}
-
 HitableList* GetRandomScene();
