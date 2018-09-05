@@ -18,12 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="material.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mathutils.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="hitable_list.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -31,6 +25,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="threadrunner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mathutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
