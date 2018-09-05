@@ -23,14 +23,20 @@ void ThreadRunner::ProcessSceneInThreads(const ArgsPackage& args)
 {
 	const auto& image = args.image;
 
-	const int coresNumber = std::max(std::thread::hardware_concurrency(), 2u) - 1u; // left a one core for OS
+    const bool singleThread = false;
+    const int singleThreadMultiplier = singleThread ? 0u : 1u;
+	const int coresNumber = std::max(std::thread::hardware_concurrency() * singleThreadMultiplier, 2u) - 1u; // left a one core for OS
 	const int columnNumber = image.GetColumns();
 	const int columsPerCore = columnNumber / coresNumber;
+    const int columnsRemainder = columnNumber % coresNumber;
 	auto threadsWorkers = std::make_unique<std::thread[]>(coresNumber);
-	for (int coreIndex = 0, startColumn = 0; coreIndex < coresNumber; ++coreIndex, startColumn += columsPerCore)
+    int startColumn = 0;
+    int endColumn = startColumn + columsPerCore + columnsRemainder;
+	for (int coreIndex = 0; coreIndex < coresNumber; ++coreIndex)
 	{
-		int endColumn = std::min(startColumn + columsPerCore, image.GetColumns());
 		threadsWorkers[coreIndex] = std::thread (processSceneToImage, args, startColumn, endColumn);
+        startColumn = endColumn;
+        endColumn += columsPerCore;
 	}
 	
 	// for debug
