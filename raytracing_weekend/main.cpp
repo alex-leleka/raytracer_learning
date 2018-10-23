@@ -72,8 +72,8 @@ void ProcessImage(ImageData& image)
 	HitableList * world = new HitableList{ list , Size };//*/
 	HitableList * world = GetRandomScene();
 
-	Vector3F lookFrom{ -8, 2, 1 };
-	Vector3F lookAt{ -4, 1, 0 };
+	Vector3F lookFrom{ -8, 4, 1 };
+	Vector3F lookAt{ -4, 3, 0 };
 	//Vector3F lookAt{ 0, 1, 0 };
 	float distanceToFocus = (lookFrom - lookAt).length();
 	float aperture = 0.0f;
@@ -88,7 +88,7 @@ void ProcessImage(ImageData& image)
 void ProcessSceneToImage(const ArgsPackage& args, int startColumn, int endColumn)
 {
 	// unpack args
-	const int &SamplesNum { args.SamplesNum };
+	const int & SamplesNum { args.SamplesNum };
 	ImageData & image { args.image };
 	const Camera &cam { args.cam };
 	const HitableList * world { args.world };

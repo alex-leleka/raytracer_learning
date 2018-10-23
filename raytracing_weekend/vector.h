@@ -26,6 +26,11 @@ struct Vector3
 			x * other.y - y * other.x };
 	}
 
+	inline VectorType reciprocal() const
+	{
+		return VectorType{ 1.0f / x, 1.0f / y, 1.0f / z };
+	}
+
 	inline VectorType operator+(const VectorType& other) const
 	{
 		return VectorType{ x + other.x, y + other.y, z + other.z };
@@ -44,6 +49,11 @@ struct Vector3
 	inline VectorType operator*(const T& number) const
 	{
 		return VectorType{ x * number, y * number, z * number };
+	}
+
+	inline VectorType operator/(const VectorType& other) const
+	{
+		return VectorType{ x / other.x, y / other.y, z / other.z };
 	}
 
 	inline VectorType operator/(const T& number) const
