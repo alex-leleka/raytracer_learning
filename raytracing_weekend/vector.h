@@ -14,6 +14,11 @@ struct Vector3
 
 	using VectorType = Vector3<T>;
 
+	inline Vector3(T x, T y, T z) 
+		: x(x), y(y), z(z)
+	{
+	}
+
 	inline T dot(const VectorType& other) const
 	{
 		return x * other.x + y * other.y + z * other.z;

@@ -34,6 +34,12 @@ bool Sphere::hit(const Ray& ray, float tMin, float tMax, HitRecord& recordOut) c
 	return false;
 }
 
+bool Sphere::boundingBox(float t0, float t1, Aabb & box) const
+{
+	Vector3F radiusCube = Vector3F{ radius, radius, radius };
+	box = Aabb(center - radiusCube, center + radiusCube);
+}
+
 void Sphere::FillRecord(float t, const Ray& ray, HitRecord& recordOut) const
 {
 	recordOut.t = t;
