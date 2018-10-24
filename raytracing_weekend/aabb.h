@@ -9,6 +9,7 @@ inline float ffmax(float a, float b) { return a > b ? a : b; }
 class Aabb
 {
 public:
+	Aabb() {}
 	Aabb(const Vector3F& a, const Vector3F& b);
 
 	const Vector3F& GetMin() const { return minPoint; }
@@ -21,3 +22,4 @@ private:
 	Vector3F maxPoint;
 };
 
+Aabb surroundingBox(const Aabb& box0, const Aabb& box1);

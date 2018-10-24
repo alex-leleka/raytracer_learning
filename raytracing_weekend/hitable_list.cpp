@@ -58,3 +58,34 @@ bool HitableList::hit(const Ray& ray, float tMin, float tMax, HitRecord& recordO
 	}
 	return hitAnything;
 }
+
+bool HitableList::boundingBox(float t0, float t1, Aabb & box) const
+{
+	if (listSize < 1)
+	{
+		return false;
+	}
+	Aabb tempBox;
+	bool hitFirstElement = list[0]->boundingBox(t0, t1, tempBox);
+	if (!hitFirstElement)
+	{
+		return false;
+	}
+	else
+	{
+		box = tempBox;
+	}
+	for (int i = 0; i < listSize; ++i)
+	{
+		if (list[i]->boundingBox(t0, t1, tempBox))
+		{
+			box = surroundingBox(box, tempBox);
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
