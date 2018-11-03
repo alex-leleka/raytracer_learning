@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="aabb.cpp" />
+    <ClCompile Include="BhvNode.cpp" />
     <ClCompile Include="hitable_list.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="material.cpp" />
@@ -125,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aabb.h" />
+    <ClInclude Include="BhvNode.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="hitable.h" />
     <ClInclude Include="hitable_list.h" />

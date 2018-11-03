@@ -15,7 +15,7 @@ public:
 	const Vector3F& GetMin() const { return minPoint; }
 	const Vector3F& GetMax() const { return maxPoint; }
 
-	inline bool hit(const Ray& r, float tmin, float tmax) const;
+	bool hit(const Ray& r, float tmin, float tmax) const;
 
 private:
 	Vector3F minPoint;
