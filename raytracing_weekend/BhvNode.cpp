@@ -18,14 +18,7 @@ BhvNode::BhvNode(Hitable ** list, int n, float time0, float time1)
 			std::cerr << "No bounding box in BhvNode ctor" << std::endl;
 		}
 
-		if (boxLeft.GetMin()[axis] - boxRight.GetMin()[axis] < 0.0f)
-		{
-			return -1;
-		}
-		else
-		{
-			return 1;
-		}
+		return (boxLeft.GetMin()[axis] - boxRight.GetMin()[axis] < 0.0f);
 	};
 
 	std::sort(list, list + n, boxCmp); // TODO: check type cast

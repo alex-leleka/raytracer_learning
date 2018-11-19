@@ -6,13 +6,14 @@
 
 class Camera;
 class HitableList;
+class Hitable;
 
 struct ArgsPackage
 {
 	const int &SamplesNum;
 	ImageData & image;
 	const Camera &cam;
-	const HitableList * world;
+	const Hitable * world;
 };
 
 class ThreadRunner
@@ -23,7 +24,10 @@ public:
 	~ThreadRunner();
 
 	void ProcessSceneInThreads(const ArgsPackage& args);
+	void ExecutePayload(const ArgsPackage& args) const;
 private:
 	Job processSceneToImage;
+
+	bool timeProfiling{ true };
 };
 
