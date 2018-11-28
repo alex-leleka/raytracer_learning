@@ -21,7 +21,7 @@ BhvNode::BhvNode(Hitable ** list, int n, float time0, float time1)
 		return (boxLeft.GetMin()[axis] - boxRight.GetMin()[axis] < 0.0f);
 	};
 
-	std::sort(list, list + n, boxCmp); // TODO: check type cast
+	std::sort(&list[0], &list[n], boxCmp); // TODO: check type cast
 
 	switch(n)
 	{
@@ -35,7 +35,7 @@ BhvNode::BhvNode(Hitable ** list, int n, float time0, float time1)
 	default:
 		int halfOfNumber = n / 2;
 		m_left = new BhvNode(list, halfOfNumber, time0, time1);
-		m_right = new BhvNode(list + halfOfNumber, n - halfOfNumber, time0, time1);
+		m_right = new BhvNode(&list[halfOfNumber], n - halfOfNumber, time0, time1);
 		break;
 	}
 
