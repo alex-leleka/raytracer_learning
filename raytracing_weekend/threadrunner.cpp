@@ -34,17 +34,17 @@ void ThreadRunner::ProcessSceneInThreads(const ArgsPackage& args)
 
 	if (timeProfiling)
 	{
-		double time = timeProfiler.EndTimecount();
-		std::cout << "Result:" << time << std::endl;
+		double timeSeconds = timeProfiler.EndTimecount();
+		std::cout << "Result:" << timeSeconds << " sec." << std::endl;
 	}
 }
 
 void ThreadRunner::ExecutePayload(const ArgsPackage& args) const
 {
-	const auto& image = args.image;
 	const bool singleThread = true;
 	const int singleThreadMultiplier = singleThread ? 0u : 1u;
 	const int coresNumber = std::max(std::thread::hardware_concurrency() * singleThreadMultiplier, 2u) - 1u; // left a one core for OS
+	const auto& image = args.image;
 	const int columnNumber = image.GetColumns();
 	const int columsPerCore = columnNumber / coresNumber;
 	const int columnsRemainder = columnNumber % coresNumber;

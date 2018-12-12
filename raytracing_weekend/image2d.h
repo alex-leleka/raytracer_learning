@@ -1,11 +1,7 @@
 #pragma once
 
 #include <memory>
-
-#include "vector.h"
-
-using Color = Vector3F;
-using ColorInt = Vector3<int>;
+#include "color_defines.h"
 
 template <int N, int M>
 struct Array2D

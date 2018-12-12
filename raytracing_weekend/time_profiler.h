@@ -13,6 +13,7 @@ public:
 		start = std::chrono::high_resolution_clock::now();
 	}
 
+	// Returns end time in seconds
 	double EndTimecount()
 	{
 		end = std::chrono::high_resolution_clock::now();
