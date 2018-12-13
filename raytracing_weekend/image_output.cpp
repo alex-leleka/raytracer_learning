@@ -3,6 +3,16 @@
 #include <fstream>
 #include "image2d.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+#include "ImageExporterDisplayWin.h"
+#else
+int DisplayImage(const ImageData& image)
+{
+	(void)image;
+	return 0;
+}
+#endif
+
 void WriteImage(const std::string& fileName, const ImageData& imageData)
 {
 	std::ofstream file{ fileName };

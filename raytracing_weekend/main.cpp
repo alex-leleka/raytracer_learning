@@ -21,6 +21,7 @@ int main()
 	ProcessImage(image);
 
 	WriteImage("Test.ppm", image);
+	DisplayImage(image);
 
 	system("pause"); // wait for a key pressed
 }

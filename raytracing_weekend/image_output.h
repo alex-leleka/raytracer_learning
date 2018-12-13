@@ -5,3 +5,4 @@
 
 
 void WriteImage(const std::string& fileName, const ImageData& imageData);
+int DisplayImage(const ImageData& image);

@@ -12,11 +12,15 @@ struct Array2D
 	}
 
 	std::unique_ptr<Color[]> data;
-	inline Color operator()(int i, int j) const { return data[i + j * N]; }
+	inline const Color& operator()(int i, int j) const { return data[i + j * N]; }
 	inline Color& operator()(int i, int j) { return data[i + j * N]; }
 	inline int GetRows() const { return N; }
 	inline int GetColumns() const { return M; }
 	inline int GetSize() { return N * M; }
+
+	inline int GetHeight() const { return N; }
+	inline int GetWidth() const { return M; }
+	inline const Color& Get(int column,int row) const { return data[row + column * N]; }
 };
 
 using ImageData = Array2D<400, 600>;

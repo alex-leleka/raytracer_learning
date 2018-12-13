@@ -26,7 +26,7 @@ void ThreadRunner::ProcessSceneInThreads(const ArgsPackage& args)
 	TimeProfiler timeProfiler;
 	if (timeProfiling)
 	{
-		std::cout << "Start work" << std::endl;
+		std::cout << "Start work" << " | ";
 		timeProfiler.StartTimecount();
 	}
 
@@ -35,7 +35,7 @@ void ThreadRunner::ProcessSceneInThreads(const ArgsPackage& args)
 	if (timeProfiling)
 	{
 		double timeSeconds = timeProfiler.EndTimecount();
-		std::cout << "Result:" << timeSeconds << " sec." << std::endl;
+		std::cout << "Result: " << timeSeconds << " sec." << std::endl;
 	}
 }
 
