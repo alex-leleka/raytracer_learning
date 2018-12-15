@@ -3,6 +3,7 @@
 #include <functional>
 
 #include "image2d.h"
+#include "config.h"
 
 class Camera;
 class HitableList;
@@ -19,15 +20,17 @@ struct ArgsPackage
 class ThreadRunner
 {
 public:
-	using Job = std::function<void(const ArgsPackage& args, int startColumn, int endColumn)>;
+	using Job = std::function<void(const ArgsPackage& args, const int startColumn, const int endColumn)>;
 	ThreadRunner(Job job);
 	~ThreadRunner();
 
 	void ProcessSceneInThreads(const ArgsPackage& args);
-	void ExecutePayload(const ArgsPackage& args) const;
 private:
+	void ExecutePayload(const ArgsPackage& args) const;
+	void RunSingleThread(const ArgsPackage& args) const;
+	void RunMultiThread(const ArgsPackage& args) const;
 	Job processSceneToImage;
 
-	bool timeProfiling{ true };
+	bool timeProfiling;
 };
 

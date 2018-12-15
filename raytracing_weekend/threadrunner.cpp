@@ -13,6 +13,7 @@
 
 ThreadRunner::ThreadRunner(Job job) 
 	: processSceneToImage(job)
+	, timeProfiling(TimeProfilingEnabled)
 {
 }
 
@@ -26,7 +27,7 @@ void ThreadRunner::ProcessSceneInThreads(const ArgsPackage& args)
 	TimeProfiler timeProfiler;
 	if (timeProfiling)
 	{
-		std::cout << "Start work" << " | ";
+		std::cout << "Start work | ";
 		timeProfiler.StartTimecount();
 	}
 
@@ -41,8 +42,25 @@ void ThreadRunner::ProcessSceneInThreads(const ArgsPackage& args)
 
 void ThreadRunner::ExecutePayload(const ArgsPackage& args) const
 {
-	const bool singleThread = true;
-	const int singleThreadMultiplier = singleThread ? 0u : 1u;
+	if (SingleThreadJobExecution)
+	{
+		RunSingleThread(args);
+	}
+	else
+	{
+		RunMultiThread(args);
+	}
+}
+
+void ThreadRunner::RunSingleThread(const ArgsPackage& args) const
+{
+	const auto& image = args.image;
+	processSceneToImage(args, 0, image.GetColumns());
+}
+
+void ThreadRunner::RunMultiThread(const ArgsPackage& args) const
+{
+	const int singleThreadMultiplier = SingleThreadJobExecution ? 0u : 1u;
 	const int coresNumber = std::max(std::thread::hardware_concurrency() * singleThreadMultiplier, 2u) - 1u; // left a one core for OS
 	const auto& image = args.image;
 	const int columnNumber = image.GetColumns();
@@ -51,6 +69,7 @@ void ThreadRunner::ExecutePayload(const ArgsPackage& args) const
 	auto threadsWorkers = std::make_unique<std::thread[]>(coresNumber);
 	int startColumn = 0;
 	int endColumn = startColumn + columsPerCore + columnsRemainder;
+
 	for (int coreIndex = 0; coreIndex < coresNumber; ++coreIndex)
 	{
 		threadsWorkers[coreIndex] = std::thread(processSceneToImage, args, startColumn, endColumn);

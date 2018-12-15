@@ -131,6 +131,7 @@
     <ClInclude Include="BhvNode.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="color_defines.h" />
+    <ClInclude Include="config.h" />
     <ClInclude Include="hitable.h" />
     <ClInclude Include="hitable_list.h" />
     <ClInclude Include="image2d.h" />

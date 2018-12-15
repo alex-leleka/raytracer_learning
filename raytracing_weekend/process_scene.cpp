@@ -6,6 +6,7 @@
 #include "camera.h"
 #include "threadrunner.h"
 #include "material.h"
+#include "config.h"
 
 void ProcessImage(ImageData& image)
 {
@@ -30,7 +31,7 @@ void ProcessImage(ImageData& image)
 	float distanceToFocus = (lookFrom - lookAt).length();
 	float aperture = 0.0f;
 	Camera cam(lookFrom, lookAt, Vector3F{ 0.f, 1.f, 0.f }, 70.f, image.GetColumns() / float(image.GetRows()), aperture, distanceToFocus);
-	const int SamplesNum = 1; // TODO: move to constants config file
+	const int SamplesNum = PrimeRaysSamplesNum;
 
 	ArgsPackage args{ SamplesNum, image, cam, world };
 	ThreadRunner runner(ProcessSceneToImage);
