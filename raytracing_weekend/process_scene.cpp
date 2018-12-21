@@ -7,7 +7,13 @@
 #include "threadrunner.h"
 #include "material.h"
 #include "config.h"
+#include <limits>
 
+//#if DEBUG_MEMORY_LEAKS
+#include <vld.h>
+//#endif
+
+ImageData bhv_image;
 void ProcessImage(ImageData& image)
 {
 	/*
@@ -33,9 +39,13 @@ void ProcessImage(ImageData& image)
 	Camera cam(lookFrom, lookAt, Vector3F{ 0.f, 1.f, 0.f }, 70.f, image.GetColumns() / float(image.GetRows()), aperture, distanceToFocus);
 	const int SamplesNum = PrimeRaysSamplesNum;
 
-	ArgsPackage args{ SamplesNum, image, cam, world };
+	ArgsPackage args{ SamplesNum, image, cam, UseBhvStructure ? bhvWorld : world };
 	ThreadRunner runner(ProcessSceneToImage);
 	runner.ProcessSceneInThreads(args);
+
+#ifdef BHV_NODE_VISUAL_DEBUG
+	DisplayImage(bhv_image);
+#endif
 }
 
 void ProcessSceneToImage(const ArgsPackage& args, int startColumn, int endColumn)
@@ -57,7 +67,7 @@ void ProcessSceneToImage(const ArgsPackage& args, int startColumn, int endColumn
 				float u = (i + GetRandomFloat()) / float(image.GetColumns());
 				float v = 1.0f - (j + GetRandomFloat()) / float(image.GetRows());
 				auto r = cam.GetRay(u, v);
-				color += RayToColor(r, world, 0);
+				color += RayToColor(r, world, 0, i, j);
 			}
 			color *= SampleWeight;
 			image(j, i) = color;
@@ -65,13 +75,22 @@ void ProcessSceneToImage(const ArgsPackage& args, int startColumn, int endColumn
 	}
 }
 
-Color RayToColor(const Ray& ray, const Hitable* world, int depth)
+Color RayToColor(const Ray& ray, const Hitable* world, int depth, int i, int j)
 {
 	HitRecord record;
 	const float antishadowAcneBias = 0.001f;
 	const int MaxDepth = 50;
 	if (world->hit(ray, antishadowAcneBias, std::numeric_limits<float>::max(), record))
 	{
+#ifdef BHV_NODE_VISUAL_DEBUG
+		if (depth == 0)
+		{
+			float value = record BHV_NODE_VISUAL_DEBUG_FIELD_NAME / 8.0f;
+			Color color{ value,value,value };
+			bhv_image(j, i) += color;
+			//pixDrawer.PutPixel(i, j);
+		}
+#endif
 		Ray scattered;
 		Vector3F attenuation;
 		if (depth < MaxDepth && record.mat->scatter(ray, record, attenuation, scattered))
@@ -79,6 +98,17 @@ Color RayToColor(const Ray& ray, const Hitable* world, int depth)
 			return attenuation * RayToColor(scattered, world, depth + 1);
 		}
 		return Vector3F{ 0, 0, 0 };
+	}
+	else
+	{
+#ifdef BHV_NODE_VISUAL_DEBUG
+		if (depth == 0)
+		{
+			float value = record BHV_NODE_VISUAL_DEBUG_FIELD_NAME / 8.0f;
+			Color color{ value,value,value };
+			bhv_image(j, i) += color;
+		}
+#endif
 	}
 	auto unitDirection = ray.direction().getunitvector();
 	float t = 0.5f * (unitDirection.y + 1.0f);

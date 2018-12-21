@@ -3,6 +3,7 @@
 #include "vector.h"
 #include "ray.h"
 #include "aabb.h"
+#include "config.h"
 
 class Material;
 
@@ -12,6 +13,7 @@ struct HitRecord
 	Vector3F point;
 	Vector3F normal;
 	Material* mat;
+	BHV_NODE_VISUAL_DEBUG_FIELD
 };
 
 class Hitable

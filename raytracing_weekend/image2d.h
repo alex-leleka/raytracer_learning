@@ -21,6 +21,8 @@ struct Array2D
 	inline int GetHeight() const { return N; }
 	inline int GetWidth() const { return M; }
 	inline const Color& Get(int column,int row) const { return data[row + column * N]; }
+	static constexpr int SizeX = M;
+	static constexpr int SizeY = N;
 };
 
 using ImageData = Array2D<400, 600>;

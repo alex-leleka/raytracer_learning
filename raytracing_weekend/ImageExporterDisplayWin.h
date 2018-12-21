@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "image2d.h"
+#include "config.h"
 
 static HWND GetConsoleWndHandle();
 static void ShowConsoleCursor(bool showFlag);
@@ -11,6 +12,11 @@ static int PutPixel(int x, int y, COLORREF crColor, HWND hConWnd, HDC drawHDC = 
 
 int DisplayImage(const ImageData& image)
 {
+	if (!ShowImageInWindow)
+	{
+		return 0;
+	}
+
 	const int maxWidth = 960;
 	const int maxHeight = 480;
 	if (maxWidth < image.GetWidth() || maxHeight < image.GetHeight())

@@ -8,9 +8,9 @@ Aabb surroundingBox(const Aabb& box0, const Aabb& box1)
 		ffmin(box0.GetMin().z, box1.GetMin().z)
 	};
 	Vector3F big{
-		ffmin(box0.GetMax().x, box1.GetMax().x),
-		ffmin(box0.GetMax().y, box1.GetMax().y),
-		ffmin(box0.GetMax().z, box1.GetMax().z)
+		ffmax(box0.GetMax().x, box1.GetMax().x),
+		ffmax(box0.GetMax().y, box1.GetMax().y),
+		ffmax(box0.GetMax().z, box1.GetMax().z)
 	};
 	return Aabb(small, big);
 }
@@ -31,8 +31,8 @@ bool Aabb::hit(const Ray & r, float tmin, float tmax) const
 	{
 		float t0 = ffmin(intervalMin[i], intervalMax[i]);
 		float t1 = ffmax(intervalMin[i], intervalMax[i]);
-		tmin = ffmin(t0, tmin);
-		tmax = ffmax(t1, tmax);
+		tmin = ffmax(t0, tmin);
+		tmax = ffmin(t1, tmax);
 		if (tmax <= tmin)
 		{
 			return false;

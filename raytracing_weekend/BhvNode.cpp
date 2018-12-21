@@ -21,7 +21,7 @@ BhvNode::BhvNode(Hitable ** list, int n, float time0, float time1)
 		return (boxLeft.GetMin()[axis] - boxRight.GetMin()[axis] < 0.0f);
 	};
 
-	std::sort(&list[0], &list[n], boxCmp); // TODO: check type cast
+	std::sort(&list[0], &list[n], boxCmp);
 
 	switch(n)
 	{
@@ -64,7 +64,13 @@ bool BhvNode::hit(const Ray & ray, float tMin, float tMax, HitRecord & recordOut
 	{ 
 		HitRecord leftRecord, rightRecord;
 		bool leftHit = m_left->hit(ray, tMin, tMax, leftRecord);
-		bool rightHit = m_left->hit(ray, tMin, tMax, rightRecord);
+		bool rightHit = m_right->hit(ray, tMin, tMax, rightRecord);
+
+#ifdef BHV_NODE_VISUAL_DEBUG
+		leftRecord BHV_NODE_VISUAL_DEBUG_INCREMENT;
+		rightRecord BHV_NODE_VISUAL_DEBUG_INCREMENT;
+#endif
+
 		bool leftIsClosestHit = leftHit && (!rightHit || leftRecord.t < rightRecord.t);
 		bool rightIsClosestHit = rightHit && !leftIsClosestHit;
 		if (leftIsClosestHit)

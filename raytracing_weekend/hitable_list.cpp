@@ -33,6 +33,14 @@ HitableList * GetRandomScene()
 					list[i++] = new Sphere(center, 0.2f, new Dielectric(1.5f));
 				}
 			}
+			if (i == (Size-3))
+			{
+				break;
+			}
+		}
+		if (i == (Size - 3))
+		{
+			break;
 		}
 	}
 	list[i++] = new Sphere(Vector3F{ 0, 1, 0 }, 1, new Dielectric(1.5f));

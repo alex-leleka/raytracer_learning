@@ -60,8 +60,7 @@ void ThreadRunner::RunSingleThread(const ArgsPackage& args) const
 
 void ThreadRunner::RunMultiThread(const ArgsPackage& args) const
 {
-	const int singleThreadMultiplier = SingleThreadJobExecution ? 0u : 1u;
-	const int coresNumber = std::max(std::thread::hardware_concurrency() * singleThreadMultiplier, 2u) - 1u; // left a one core for OS
+	const int coresNumber = std::max(std::thread::hardware_concurrency(), 2u) - 1u; // left a one core for OS
 	const auto& image = args.image;
 	const int columnNumber = image.GetColumns();
 	const int columsPerCore = columnNumber / coresNumber;
