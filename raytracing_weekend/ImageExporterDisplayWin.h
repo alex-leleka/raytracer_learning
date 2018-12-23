@@ -2,9 +2,6 @@
 #include <conio.h>
 #include <iostream>
 
-#include "image2d.h"
-#include "config.h"
-
 static HWND GetConsoleWndHandle();
 static void ShowConsoleCursor(bool showFlag);
 static int PutPixel(int x, int y, COLORREF crColor, HWND hConWnd, HDC drawHDC = nullptr);
@@ -12,7 +9,7 @@ static int PutPixel(int x, int y, COLORREF crColor, HWND hConWnd, HDC drawHDC = 
 
 int DisplayImage(const ImageData& image)
 {
-	if (!ShowImageInWindow)
+	if (!GlobalConfig.ShowImageInWindow)
 	{
 		return 0;
 	}

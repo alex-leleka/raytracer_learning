@@ -3,7 +3,6 @@
 #include <functional>
 
 #include "image2d.h"
-#include "config.h"
 
 class Camera;
 class HitableList;

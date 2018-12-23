@@ -8,7 +8,7 @@ HitableList * GetRandomScene()
 {
 	const int Size = 501;
 	Hitable **list = new Hitable*[Size];
-	list[0] = new Sphere(Vector3F{ 0, -1000, 0 }, 1000, new Lambertian(Vector3F{ 0.5f, 0.5f, 0.5f }));
+	list[0] = new Sphere(Vector3F{ 0, -1000, 0 }, 1000, new Lambertian(new CheckerTexture));
 	int i = 1;
 	for (int a = -11; a < 11; a++)
 	{
@@ -21,7 +21,7 @@ HitableList * GetRandomScene()
 				if (chooseMaterial < 0.8f)
 				{
 					list[i++] = new Sphere(center, 0.2f, 
-						new Lambertian(Vector3F{ GetRandomFloat()*GetRandomFloat(), GetRandomFloat()*GetRandomFloat(), GetRandomFloat()*GetRandomFloat() }));
+						new Lambertian(new ConstantTexture{ GetRandomFloat()*GetRandomFloat(), GetRandomFloat()*GetRandomFloat(), GetRandomFloat()*GetRandomFloat() }));
 				}
 				else if (chooseMaterial < 0.95f)
 				{
@@ -44,7 +44,7 @@ HitableList * GetRandomScene()
 		}
 	}
 	list[i++] = new Sphere(Vector3F{ 0, 1, 0 }, 1, new Dielectric(1.5f));
-	list[i++] = new Sphere(Vector3F{-4, 1, 0 }, 1, new Lambertian(Vector3F{ 0.4f, 0.2f, 0.1f }));
+	list[i++] = new Sphere(Vector3F{-4, 1, 0 }, 1, new Lambertian(new ConstantTexture{ 0.4f, 0.2f, 0.1f }));
 	list[i++] = new Sphere(Vector3F{ 4, 1, 0 }, 1, new Metal(Vector3F{ 0.7f, 0.6f, 0.5f }, 0.0f));
 
 	return new HitableList{ list, i };

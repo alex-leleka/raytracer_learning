@@ -3,7 +3,7 @@
 #include "vector.h"
 #include "ray.h"
 #include "aabb.h"
-#include "config.h"
+#include "bhv_node_visual_debug.h"
 
 class Material;
 

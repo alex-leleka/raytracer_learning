@@ -13,7 +13,9 @@
 #include "image_output.h"
 #include "image2d.h"
 #include "process_scene.h"
+#include "test_defines.h"
 
+#ifndef TEST_RUN
 int main()
 {
 	ImageData image;
@@ -25,18 +27,4 @@ int main()
 
 	system("pause"); // wait for a key pressed
 }
-
-//------------------------------
-void debugImageOutput(ImageData& image)
-{
-	for (int i = 0; i < image.GetRows(); ++i)
-	{
-		for (int j = 0; j < image.GetColumns(); ++j)
-		{
-			auto& texel = image(i, j);
-			texel.r = i / float(image.GetRows());
-			texel.g = j / float(image.GetColumns());
-			texel.b = 0.3f;
-		}
-	}
-}
+#endif // TEST_RUN

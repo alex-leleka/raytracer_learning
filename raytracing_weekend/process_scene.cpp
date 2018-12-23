@@ -7,7 +7,10 @@
 #include "threadrunner.h"
 #include "material.h"
 #include "config.h"
+#include "bhv_node_visual_debug.h"
+
 #include <limits>
+
 
 //#if DEBUG_MEMORY_LEAKS
 #include <vld.h>
@@ -37,9 +40,9 @@ void ProcessImage(ImageData& image)
 	float distanceToFocus = (lookFrom - lookAt).length();
 	float aperture = 0.0f;
 	Camera cam(lookFrom, lookAt, Vector3F{ 0.f, 1.f, 0.f }, 70.f, image.GetColumns() / float(image.GetRows()), aperture, distanceToFocus);
-	const int SamplesNum = PrimeRaysSamplesNum;
+	const int SamplesNum = GlobalConfig.PrimeRaysSamplesNum;
 
-	ArgsPackage args{ SamplesNum, image, cam, UseBhvStructure ? bhvWorld : world };
+	ArgsPackage args{ SamplesNum, image, cam, GlobalConfig.UseBhvStructure ? bhvWorld : world };
 	ThreadRunner runner(ProcessSceneToImage);
 	runner.ProcessSceneInThreads(args);
 
@@ -88,7 +91,6 @@ Color RayToColor(const Ray& ray, const Hitable* world, int depth, int i, int j)
 			float value = record BHV_NODE_VISUAL_DEBUG_FIELD_NAME / 8.0f;
 			Color color{ value,value,value };
 			bhv_image(j, i) += color;
-			//pixDrawer.PutPixel(i, j);
 		}
 #endif
 		Ray scattered;

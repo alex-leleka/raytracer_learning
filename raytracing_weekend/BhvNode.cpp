@@ -1,6 +1,7 @@
 #include "bhvnode.h"
 
 #include "mathutils.h"
+#include "bhv_node_visual_debug.h"
 #include <iostream>
 #include <algorithm>
 

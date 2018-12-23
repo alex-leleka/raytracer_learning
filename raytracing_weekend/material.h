@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vector.h"
+#include "texture.h"
 
 struct Ray;
 struct HitRecord;
@@ -14,9 +15,9 @@ public:
 class Lambertian : public Material
 {
 public:
-	Lambertian(const Vector3F& albedo) : albedo(albedo) {}
+	Lambertian(const Texture* albedo) : albedo(albedo) {}
 	bool scatter(const Ray& rIn, const HitRecord& record, Vector3F& attenuation, Ray& scattered) const override;
-	Vector3F albedo {0, 0, 0};
+	const Texture* albedo;
 };
 
 class Metal : public Material

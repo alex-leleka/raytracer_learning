@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include "image2d.h"
+#include "config.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 #include "ImageExporterDisplayWin.h"

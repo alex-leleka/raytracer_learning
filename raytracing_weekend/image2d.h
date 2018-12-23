@@ -6,21 +6,24 @@
 template <int N, int M>
 struct Array2D
 {
+	using TDataType = Color;
 	Array2D()
 	{
-		data = std::make_unique<Color[]>(N * M);
+		data = std::make_unique<TDataType[]>(N * M);
 	}
 
-	std::unique_ptr<Color[]> data;
-	inline const Color& operator()(int i, int j) const { return data[i + j * N]; }
-	inline Color& operator()(int i, int j) { return data[i + j * N]; }
+	std::unique_ptr<TDataType[]> data;
+	inline const TDataType& operator()(int i, int j) const { return data[i + j * N]; }
+	inline TDataType& operator()(int i, int j) { return data[i + j * N]; }
 	inline int GetRows() const { return N; }
 	inline int GetColumns() const { return M; }
-	inline int GetSize() { return N * M; }
+	inline int GetSize() const { return N * M; }
 
 	inline int GetHeight() const { return N; }
 	inline int GetWidth() const { return M; }
-	inline const Color& Get(int column,int row) const { return data[row + column * N]; }
+	inline const TDataType& Get(int column,int row) const { return data[row + column * N]; }
+	inline const TDataType& GetByLinearIndex(int i) const { return data[i]; }
+
 	static constexpr int SizeX = M;
 	static constexpr int SizeY = N;
 };

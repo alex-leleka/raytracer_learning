@@ -3,6 +3,7 @@
 #include "camera.h"
 #include "hitable_list.h"
 #include "time_profiler.h"
+#include "config.h"
 
 #include <thread>
 #include <vector>
@@ -13,7 +14,7 @@
 
 ThreadRunner::ThreadRunner(Job job) 
 	: processSceneToImage(job)
-	, timeProfiling(TimeProfilingEnabled)
+	, timeProfiling(GlobalConfig.TimeProfilingEnabled)
 {
 }
 
@@ -42,7 +43,7 @@ void ThreadRunner::ProcessSceneInThreads(const ArgsPackage& args)
 
 void ThreadRunner::ExecutePayload(const ArgsPackage& args) const
 {
-	if (SingleThreadJobExecution)
+	if (GlobalConfig.SingleThreadJobExecution)
 	{
 		RunSingleThread(args);
 	}
