@@ -30,13 +30,7 @@ void WriteImage(const std::string& fileName, const ImageData& imageData)
 		{
 			auto color = imageData(i, j);
 			const int maxValue = 255;
-			if (gammacorrection)
-			{
-				color.r = sqrt(color.r);
-				color.g = sqrt(color.g);
-				color.b = sqrt(color.b);
-			}
-			auto colorInt = ColorFloatToInt(color, maxValue);
+			auto colorInt = ColorFloatToInt(color, maxValue, gammacorrection);
 			file << colorInt.r << " " << colorInt.g << " " << colorInt.b << std::endl;
 		}
 	}

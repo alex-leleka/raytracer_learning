@@ -8,7 +8,7 @@ HitableList * GetRandomScene()
 {
 	const int Size = 501;
 	Hitable **list = new Hitable*[Size];
-	list[0] = new Sphere(Vector3F{ 0, -1000, 0 }, 1000, new Lambertian(new CheckerTexture));
+	list[0] = new Sphere(Vector3F{ 0, -1000, 0 }, 1000, new Lambertian(new NoiseTexture));
 	int i = 1;
 	for (int a = -11; a < 11; a++)
 	{

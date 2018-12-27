@@ -33,12 +33,13 @@ int DisplayImage(const ImageData& image)
 
 	auto maxColor = 255;
 	auto drawHdc = GetDC(hConWnd);
+	bool gammacorrection = true;
 	for (int column = 0; column < image.GetColumns(); ++column)
 	{
 		for (int row = 0; row < image.GetRows(); ++row)
 		{
 			const auto& clr = image.Get(column, row);
-			auto colorInt = ColorFloatToInt(clr, maxColor);
+			auto colorInt = ColorFloatToInt(clr, maxColor, gammacorrection);
 			const auto gdiColor RGB(colorInt.r, colorInt.g, colorInt.b);
 			PutPixel(leftTopCornerX + column, leftTopCornerY + row, gdiColor, hConWnd, drawHdc);
 		}

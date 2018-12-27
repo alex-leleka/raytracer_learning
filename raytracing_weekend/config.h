@@ -3,7 +3,7 @@
 struct ConfigurationVariables
 {
 	bool TimeProfilingEnabled = true;
-	int PrimeRaysSamplesNum = 2048;
+	int PrimeRaysSamplesNum = 256;
 	bool SingleThreadJobExecution = false;
 	bool ShowImageInWindow = true;
 	bool UseBhvStructure = true;

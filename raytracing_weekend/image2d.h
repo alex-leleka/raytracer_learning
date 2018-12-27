@@ -31,12 +31,15 @@ struct Array2D
 using ImageData = Array2D<400, 600>;
 
 
-inline int ColorFloatToInt(float value, int maxVal)
+inline int ColorFloatToInt(float value, int maxVal, bool gammacorrection)
 {
-	return int(value * maxVal + 0.5f);
+	const float expPower = 1.0f / 2.2f;
+	return int(pow((value), expPower) * maxVal + 0.5f);
 }
 
-inline ColorInt ColorFloatToInt(const Color& color, int maxVal)
+inline ColorInt ColorFloatToInt(const Color& color, int maxVal, bool gammacorrection)
 {
-	return ColorInt{ ColorFloatToInt(color.r,maxVal), ColorFloatToInt(color.g, maxVal), ColorFloatToInt(color.b, maxVal) };
+	return ColorInt{ ColorFloatToInt(color.r,maxVal, gammacorrection), 
+		ColorFloatToInt(color.g, maxVal, gammacorrection), 
+		ColorFloatToInt(color.b, maxVal, gammacorrection) };
 }
